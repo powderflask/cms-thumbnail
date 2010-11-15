@@ -15,8 +15,8 @@ Features
 * Named "presets" define image processing rules (image geometry and options) - can be configured in settings or dynamically in DB.
 * Content editors can choose which preset to display image with (or even define their own presets)
 * Two plugins:
-  1. Picture - extends the django-cms Picture plugin to add an imagecache preset.
-  2. Image - works with any model that defines an ImageField and adds an imagecache preset.
+1. Picture - extends the django-cms Picture plugin to add an imagecache preset.
+2. Image - works with any model that defines an ImageField - adds an imagecache preset.
 * Can use each plugin independently
 * Built on top of the excellent `sorl-thumbnail <https://github.com/sorl/sorl-thumbnail>`_ module - provides loads of flexibility and extensibility.
 
@@ -80,7 +80,7 @@ Add the base module and one or more plugins to your ``INSTALLED_APPS`` in settin
 
 OR  pick and choose::
 
-    INSTALLED_APPS = (...,  # don't need base module if presets defined in settings
+    INSTALLED_APPS = (...,  # don't need base module if presets defined in settings and not using imagecache templatetag
         'cms_imagecache.plugins.picture',  # use this instead of 'cms.plugins.picture'
         'cms_imagecache.plugins.image',
     )
@@ -108,7 +108,7 @@ and can be overridden by adding a "cms_imagecache" folder to your project templa
 Settings
 ========
 
-No settings are required, however, you may configure the presets as settings::
+No settings are required, however, you may configure presets in settings::
 
     CMS_IMAGECACHE_PRESETS = {
         'preset name': {
@@ -125,8 +125,8 @@ A preset defines a set of image processing operations, which might include scali
 cropping, etc.  The available operations are defined by sorl-thumbnail (see `thumbnail documentation <http://thumbnail.sorl.net/index.html>`_).
 A preset is composed of two fields:
 
-* geometry: this is the sorl-thumbnail geometry, and defines how the image will be scaled (see `thumbnail Geometry <http://thumbnail.sorl.net/template.html#geometry>`_)
-* options: these are the sorl-thumbnail image processing options (see `thumbnail Options <http://thumbnail.sorl.net/template.html#options>`_)
+* geometry: a sorl-thumbnail geometry string - defines how the image will be scaled (see `thumbnail Geometry <http://thumbnail.sorl.net/template.html#geometry>`_)
+* options: a dictionary of sorl-thumbnail image processing options (see `thumbnail Options <http://thumbnail.sorl.net/template.html#options>`_)
 
 These definitions are passed directly through to sorl-thumbnail without interpretation. 
 In turn, sorl-thumbnail passes the options directly through to the backend image library engine,
@@ -139,7 +139,8 @@ Presets can be defined in 2 ways:
 1. in the project settings.py (see Settings, above).
    This option allows a developer to define the presets used for a site, without having to add any fixtures to the DB.
    Presets defined in settings are NOT editable by the end-user.
-   There is no need to include the base module in INSTALLED_APPS if all presets are defined in settings.
+   There is no need to include the base module in INSTALLED_APPS if all presets are defined in settings
+   and you use the thumbnail rather than the imagecache template tag (see below).
 2. via the Presets model.
    This option allows creating and editing of presets through the django Admin.
    Users with the right permission can edit presets.
@@ -149,10 +150,12 @@ Presets can be defined in 2 ways:
 Template Tags
 =============
 Use either sorl-thumbnail's template tag, and pass the preset fields through::
+
    {% load thumbnail %}
    {% thumbnail source preset.geometry options=preset.options as var %}
 
 OR use the imagecache template tag, which has a simplified syntax::
+
    {% load imagecache %}
    {% imagecache source preset as var %}
    
