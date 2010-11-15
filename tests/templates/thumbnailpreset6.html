@@ -1,0 +1,7 @@
+{% load thumbnail imagecache %}{% spaceless %}
+{% thumbnail item.image "100x100" as th %}
+    {% imagecache item.image "test_6" as im %}
+    <a href="{{ th.url }}"><img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"></a>
+    {% endimagecache %}
+{% endthumbnail %}
+{% endspaceless %}

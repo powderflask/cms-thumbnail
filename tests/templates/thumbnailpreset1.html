@@ -1,0 +1,7 @@
+{% load thumbnail imagecache %}{% spaceless %}
+{% imagecache item.image "test_1" as im %}
+    <img style="margin:{{ im|margin:"200x100" }}" width="{{ im.x }}" height="{{ im.y }}">
+{% empty %}
+    <crap>
+{% endimagecache %}
+{% endspaceless %}
