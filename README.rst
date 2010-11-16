@@ -15,8 +15,10 @@ Features
 * Named "presets" define image processing rules (image geometry and options) - can be configured in settings or dynamically in DB.
 * Content editors can choose which preset to display image with (or even define their own presets)
 * Two plugins:
-1. Picture - extends the django-cms Picture plugin to add an imagecache preset.
-2. Image - works with any model that defines an ImageField - adds an imagecache preset.
+
+  1. Picture - extends the django-cms Picture plugin to add an imagecache preset.
+  2. Image - works with any model that defines an ImageField - adds an imagecache preset.
+
 * Can use each plugin independently
 * Built on top of the excellent `sorl-thumbnail <https://github.com/sorl/sorl-thumbnail>`_ module - provides loads of flexibility and extensibility.
 
@@ -113,7 +115,7 @@ No settings are required, however, you may configure presets in settings::
     CMS_IMAGECACHE_PRESETS = {
         'preset name': {
                 'geometry': '100x100',
-                'options': {'crop':'top 50%'}
+                'options': {'crop':'center top'}
         },
         ...
     }
