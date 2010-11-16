@@ -156,13 +156,25 @@ Use either sorl-thumbnail's template tag, and pass the preset fields through::
    {% load thumbnail %}
    {% thumbnail source preset.geometry options=preset.options as var %}
 
-OR use the imagecache template tag, which has a simplified syntax::
+OR, equivalently,  use the imagecache template tag, which simplifies the syntax::
 
    {% load imagecache %}
    {% imagecache source preset as var %}
    
 Both the thumbnail and imagecache tags have an optional {% empty %}
-tag, which renders if the source resolves to an empty value.
+tag, which renders if the source resolves to an empty value.  
+
+Margin Filter
+-------------
+There is also an ic_margin filter which exposes the `sorl-thumbnail margin filter <http://thumbnail.sorl.net/template.html#margin>`_.
+It simply takes a preset object or preset name as a parameter and delegates to the sorl-thumbnail margin filter using the preset geometry::
+
+   {% load imagecache %}
+   {% imagecache profile.photo profile.preset as im %}
+        <img src="{{ im.url }}" style="margin:{{ im|ic_margin:profile.preset }}">
+   {% endimagecache %}
+   
+The two tag libraries don't conflict, so mix and match as you like.
 
 
 Kudos

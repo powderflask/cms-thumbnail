@@ -1,0 +1,7 @@
+{% load thumbnail %}{% spaceless %}
+{% thumbnail item.image preset.geometry options=preset.options as im %}
+    <img style="margin:{{ im|margin:preset.geometry }}" width="{{ im.x }}" height="{{ im.y }}">
+{% empty %}
+    <crap>
+{% endthumbnail %}
+{% endspaceless %}

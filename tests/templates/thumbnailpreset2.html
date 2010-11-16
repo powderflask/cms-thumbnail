@@ -1,5 +1,5 @@
-{% load thumbnail imagecache %}{% spaceless %}
-{% imagecache item.image.name "test_2" as im %}
-    <img style="margin:{{ im|margin:"200x100" }}" width="{{ im.x }}" height="{{ im.y }}">
+{% load imagecache %}{% spaceless %}
+{% imagecache item.image.name preset as im %}
+    <img style="margin:{{ im|ic_margin:preset }}" width="{{ im.x }}" height="{{ im.y }}">
 {% endimagecache %}
 {% endspaceless %}

@@ -45,25 +45,31 @@ class ImagecacheTestCase(SimpleTestCaseBase):
     def setUp(self):
         super(ImagecacheTestCase, self).setUp()
         presets = [
-            ("100x100", "100x100", ''),
-            ("test_1",  "200x100", 'crop="50% 50%"'),
-            ("test_2", "200x100", ''),
-            ("test_6", "400x400", ''),
-            ("test_7", "100x100", 'crop="center" upscale="True" quality=70')
+            ("100x100", "100x100", {}),
+            ("test_1",  "200x100", {'crop':"50% 50%"}),
+            ("test_2", "200x100", {}),
+            ("test_6", "400x400", {}),
+            ("test_7", "100x100", {'crop':"center", 'upscale':"True", 'quality':70})
         ]
         for p in presets:
-            Preset.objects.get_or_create(name=p[0], geometry=p[1], options=p[2])
+            Preset.objects.get_or_create(name=p[0], geometry=p[1], 
+                                         defaults={'options':p[2]})
 
     def testModel(self):
         item = Item.objects.get(image='500x500.jpg')
-        val = render_to_string('thumbnailpreset1.html', {
-            'item': item,
-        }).strip()
-        self.assertEqual(val, u'<img style="margin:0px 0px 0px 0px" width="200" height="100">')
-        val = render_to_string('thumbnailpreset2.html', {
-            'item': item,
-        }).strip()
-        self.assertEqual(val, u'<img style="margin:0px 50px 0px 50px" width="100" height="100">')
+        for t in ['thumbnailpreset1.html', 'thumbnailpreset1a.html']:
+            val = render_to_string(t, {
+                'preset': Preset.objects.get(name="test_1"),
+                'item': item,
+            }).strip()
+            self.assertEqual(val, u'<img style="margin:0px 0px 0px 0px" width="200" height="100">')
+        
+        for t in ['thumbnailpreset2.html', 'thumbnailpreset2a.html']:
+            val = render_to_string(t, {
+                'preset': Preset.objects.get(name="test_2"),
+                'item': item,
+            }).strip()
+            self.assertEqual(val, u'<img style="margin:0px 50px 0px 50px" width="100" height="100">')
 
     def test_nested(self):
         item = Item.objects.get(image='500x500.jpg')

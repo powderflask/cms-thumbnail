@@ -7,8 +7,6 @@ from sorl.thumbnail.parsers import ThumbnailParseError, parse_crop
 from sorl.thumbnail.templatetags.thumbnail import kw_pat
 from picklefield.fields import PickledObjectField
 
-# kw_pat = re.compile(r'^(?P<key>[\w]+)=[\"\']?(?P<value>.+)[\"\']?$')
-
 def deserialize_options(option_string):
     """ 
        Split out options from option_string and return them as a dict 

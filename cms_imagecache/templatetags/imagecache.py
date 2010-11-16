@@ -3,12 +3,12 @@ from sorl.thumbnail.conf import settings
 from sorl.thumbnail.images import DummyImageFile
 from sorl.thumbnail import default
 from cms_imagecache.models import Preset
-from sorl.thumbnail.templatetags.thumbnail import ThumbnailNodeBase
+from sorl.thumbnail.templatetags import thumbnail
 
 register = Library()
 
 @register.tag('imagecache')
-class ImageCacheNode(ThumbnailNodeBase):
+class ImageCacheNode(thumbnail.ThumbnailNodeBase):
     child_nodelists = ('nodelist_file', 'nodelist_empty')
     error_msg = ('Syntax error. Expected: ``imagecache source preset as var``')
     preset_error = ('Preset %s not found.')
@@ -53,3 +53,9 @@ class ImageCacheNode(ThumbnailNodeBase):
             yield node
         for node in self.nodelist_empty:
             yield node
+
+@register.filter
+def ic_margin(file_, preset_name):
+    print preset_name
+    preset = Preset.objects.get(name=preset_name)
+    return thumbnail.margin(file_, preset.geometry)
