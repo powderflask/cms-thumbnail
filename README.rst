@@ -8,18 +8,14 @@ The module is inspired by `Drupal's imagecache module <http://drupal.org/project
 
 Currently in development - DO NOT USE for production sites!
 
+NOTE: Requires fix for django-cms issue #588 (hopefully in trunk soon).
  
 Features
 ========
 
-* Named "presets" define image processing rules (image geometry and options) - can be configured in settings or dynamically in DB.
+* Named "presets" define image processing rules (image geometry and options).
 * Content editors can choose which preset to display image with (or even define their own presets)
-* Two plugins:
-
-  1. Picture - extends the django-cms Picture plugin to add an imagecache preset.
-  2. Image - works with any model that defines an ImageField - adds an imagecache preset.
-
-* Can use each plugin independently
+* Picutre plugin extends and replaces the django-cms Picture plugin to add an imagecache preset.
 * Built on top of the excellent `sorl-thumbnail <https://github.com/sorl/sorl-thumbnail>`_ module - provides loads of flexibility and extensibility.
 
 Dependencies
@@ -82,7 +78,7 @@ Add the base module and one or more plugins to your ``INSTALLED_APPS`` in settin
 
 OR  pick and choose::
 
-    INSTALLED_APPS = (...,  # don't need base module if presets defined in settings and not using imagecache templatetag
+    INSTALLED_APPS = (...,
         'cms_imagecache.plugins.picture',  # use this instead of 'cms.plugins.picture'
         'cms_imagecache.plugins.image',
     )
@@ -110,16 +106,7 @@ and can be overridden by adding a "cms_imagecache" folder to your project templa
 Settings
 ========
 
-No settings are required, however, you may configure presets in settings::
-
-    CMS_IMAGECACHE_PRESETS = {
-        'preset name': {
-                'geometry': '100x100',
-                'options': {'crop':'center top'}
-        },
-        ...
-    }
-
+No settings specific for imagecache - see sorl-thumbnail
 
 Presets
 =======
@@ -133,20 +120,6 @@ A preset is composed of two fields:
 These definitions are passed directly through to sorl-thumbnail without interpretation. 
 In turn, sorl-thumbnail passes the options directly through to the backend image library engine,
 which provides enormous flexibility and extensibility.
-
-Defining Presets
-----------------
-Presets can be defined in 2 ways:
-
-1. in the project settings.py (see Settings, above).
-   This option allows a developer to define the presets used for a site, without having to add any fixtures to the DB.
-   Presets defined in settings are NOT editable by the end-user.
-   There is no need to include the base module in INSTALLED_APPS if all presets are defined in settings
-   and you use the thumbnail rather than the imagecache template tag (see below).
-2. via the Presets model.
-   This option allows creating and editing of presets through the django Admin.
-   Users with the right permission can edit presets.
-   To use this option, you MUST include the base module in your INSTALLED_APPS
 
 
 Template Tags

@@ -56,6 +56,5 @@ class ImageCacheNode(thumbnail.ThumbnailNodeBase):
 
 @register.filter
 def ic_margin(file_, preset_name):
-    print preset_name
     preset = Preset.objects.get(name=preset_name)
     return thumbnail.margin(file_, preset.geometry)

@@ -7,28 +7,6 @@ from sorl.thumbnail.parsers import ThumbnailParseError, parse_crop
 from sorl.thumbnail.templatetags.thumbnail import kw_pat
 from picklefield.fields import PickledObjectField
 
-def deserialize_options(option_string):
-    """ 
-       Split out options from option_string and return them as a dict 
-       Raise ThumbnailParseError if any syntax errors are discovered.
-    """
-    options = {}
-    bits = iter(smart_split(option_string))
-    for bit in bits:
-        m = kw_pat.match(bit)
-        if not m:
-            raise ThumbnailParseError("Invalid thumbnail option: %s"%bit)
-        key = smart_str(m.group('key'))
-        value = smart_str(m.group('value')).strip("\"'")
-        
-        # if the key is "crop" then validate the crop options - raises ThumbnailParseError is invalid
-        if key == "crop":
-            parse_crop(value, [0,0], [0,0])
-            
-        options[key] = value
-    return options
-
-
 class Preset(models.Model):
     """
        @todo:
@@ -55,3 +33,26 @@ class Preset(models.Model):
             for key,value in self.options.iteritems():
                 str = str + "%s='%s'\n"%(key, value)
         return str
+
+
+def deserialize_options(option_string):
+    """ 
+       Split out options from option_string and return them as a dict 
+       Raise ThumbnailParseError if any syntax errors are discovered.
+    """
+    options = {}
+    bits = iter(smart_split(option_string))
+    for bit in bits:
+        m = kw_pat.match(bit)
+        if not m:
+            raise ThumbnailParseError("Invalid thumbnail option: %s"%bit)
+        key = smart_str(m.group('key'))
+        value = smart_str(m.group('value')).strip("\"'")
+        
+        # if the key is "crop" then validate the crop options - raises ThumbnailParseError is invalid
+        if key == "crop":
+            parse_crop(value, [0,0], [0,0])
+            
+        options[key] = value
+    return options
+
