@@ -16,11 +16,11 @@ for path in paths:
 from django.test.simple import run_tests
 
 
-def imagecache_tests():
+def thumbnail_tests():
     apps = ['test_app']
     failures = run_tests(apps, verbosity=1, interactive=True)
     sys.exit(failures)
 
 if __name__ == '__main__':
-    imagecache_tests()
+    thumbnail_tests()
 

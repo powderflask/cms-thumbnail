@@ -1,5 +1,5 @@
-{% load imagecache %}{% spaceless %}
-{% imagecache item.image.name preset as im %}
-    <img style="margin:{{ im|ic_margin:preset }}" width="{{ im.x }}" height="{{ im.y }}">
-{% endimagecache %}
+{% load cms_thumbnail %}{% spaceless %}
+{% thumbnail item.image.name preset as im %}
+    <img style="margin:{{ im|margin:preset }}" width="{{ im.x }}" height="{{ im.y }}">
+{% endthumbnail %}
 {% endspaceless %}

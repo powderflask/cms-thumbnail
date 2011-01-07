@@ -1,10 +1,10 @@
-{% load imagecache %}
+{% load cms_thumbnail %}
 {% if link %}<a href="{{ link }}">{% endif %}
 <img {% if picture.float %}class="{{ picture.float }}" {% endif %}alt="{{ picture.alt }}" 
-   {% imagecache picture.image picture.preset as thumbnail %}
-     src="{{ thumbnail.url }}"
+   {% thumbnail picture.image picture.preset as thumb %}
+     src="{{ thumb.url }}"
    {% empty %}
      src="{{ picuture.image.url }}"
-   {% endimagecache %}
+   {% endthumbnail %}
 />
 {% if link %}</a>{% endif %}

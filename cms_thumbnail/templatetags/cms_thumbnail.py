@@ -2,15 +2,15 @@ from django.template import Library, NodeList, TemplateSyntaxError
 from sorl.thumbnail.conf import settings
 from sorl.thumbnail.images import DummyImageFile
 from sorl.thumbnail import default
-from cms_imagecache.models import Preset
+from ..models import Preset
 from sorl.thumbnail.templatetags import thumbnail
 
 register = Library()
 
-@register.tag('imagecache')
-class ImageCacheNode(thumbnail.ThumbnailNodeBase):
+@register.tag('thumbnail')
+class ThumbnailNode(thumbnail.ThumbnailNodeBase):
     child_nodelists = ('nodelist_file', 'nodelist_empty')
-    error_msg = ('Syntax error. Expected: ``imagecache source preset as var``')
+    error_msg = ('Syntax error. Expected: ``thumbnail source preset as var``')
     preset_error = ('Preset %s not found.')
     
     def __init__(self, parser, token):
@@ -20,9 +20,9 @@ class ImageCacheNode(thumbnail.ThumbnailNodeBase):
         self.file_ = parser.compile_filter(bits[1])
         self.preset = parser.compile_filter(bits[2])
         self.as_var = bits[-1]
-        self.nodelist_file = parser.parse(('empty', 'endimagecache',))
+        self.nodelist_file = parser.parse(('empty', 'endthumbnail',))
         if parser.next_token().contents == 'empty':
-            self.nodelist_empty = parser.parse(('endimagecache',))
+            self.nodelist_empty = parser.parse(('endthumbnail',))
             parser.delete_first_token()
         else:
             self.nodelist_empty = NodeList()
@@ -55,6 +55,6 @@ class ImageCacheNode(thumbnail.ThumbnailNodeBase):
             yield node
 
 @register.filter
-def ic_margin(file_, preset_name):
+def margin(file_, preset_name):
     preset = Preset.objects.get(name=preset_name)
     return thumbnail.margin(file_, preset.geometry)

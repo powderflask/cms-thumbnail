@@ -6,8 +6,8 @@ from os.path import join as pjoin
 from PIL import Image
 from sorl.thumbnail.conf import settings
 from sorl.thumbnail.helpers import get_module_class
-from cms_imagecache.models import Preset
-from test_app.models import Item
+from cms_thumbnail.models import Preset
+from models import Item
 
 
 class SimpleTestCaseBase(unittest.TestCase):
@@ -41,9 +41,9 @@ class SimpleTestCase(SimpleTestCaseBase):
         self.assertEqual(t.x, 1200)
         self.assertEqual(t.y, 900)
 
-class ImagecacheTestCase(SimpleTestCaseBase):
+class CMSThumbnailTestCase(SimpleTestCaseBase):
     def setUp(self):
-        super(ImagecacheTestCase, self).setUp()
+        super(CMSThumbnailTestCase, self).setUp()
         presets = [
             ("100x100", "100x100", {}),
             ("test_1",  "200x100", {'crop':"50% 50%"}),

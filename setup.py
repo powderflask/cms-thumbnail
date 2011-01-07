@@ -9,12 +9,12 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
-    name='cms-imagecache',
+    name='cms-thumbnail',
     version='0.1.0',
     description='Exposes sorl-thumbnail functionality to Django CMS',
     author='powderflask',
     author_email='powderflask@gmail.com',
-    url='http://github.com/powderflask/cms-imagecache',
+    url='http://github.com/powderflask/cms-thumbnail',
     packages=find_packages(),
     keywords='image thumbnail django cms django-cms',
     long_description=read('README.rst'),
